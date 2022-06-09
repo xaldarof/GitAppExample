@@ -5,6 +5,8 @@ import 'package:git_app/bloc/favorites_screen_bloc.dart';
 import '../../data/cache/AccountCacheModel.dart';
 
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +65,10 @@ class FavoritesScreen extends StatelessWidget {
                           ],
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
-                      margin: EdgeInsets.all(12),
+                      margin: const EdgeInsets.all(12),
                       child: Row(
                         children: [
-                          Padding(padding: const EdgeInsets.all(12)),
+                          const Padding(padding: EdgeInsets.all(12)),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
                             child: Image.network(
@@ -76,7 +78,7 @@ class FavoritesScreen extends StatelessWidget {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.all(12)),
-                          Text(accounts[index].login??""),
+                          Text(accounts[index].login),
                           const Spacer(),
                           Text(accounts[index].id.toString()),
                           const Padding(padding: EdgeInsets.all(12)),
@@ -88,7 +90,7 @@ class FavoritesScreen extends StatelessWidget {
                 }))
       ]);
     } else {
-      return Center(child: Text("Nothing to show"));
+      return const Center(child: Text("Nothing to show"));
     }
   }
 }

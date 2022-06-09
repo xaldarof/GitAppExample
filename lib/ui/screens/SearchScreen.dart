@@ -7,11 +7,21 @@ import '../../bloc/search_screen_bloc.dart';
 import '../../data/model/remote/GitAccountResponse.dart';
 
 class SearchScreen extends StatelessWidget {
-  TextEditingController textEditingController = TextEditingController();
+
+  TextEditingController queryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.search),
+          onPressed: () {
+            if (queryController.text.isNotEmpty) {
+              BlocProvider.of<SearchScreenBloc>(context)
+                  .add(OnQueryTextChangeEvent(query: queryController.text));
+            }
+          },
+        ),
         backgroundColor: Colors.white,
         body: Column(
           children: [
@@ -20,13 +30,7 @@ class SearchScreen extends StatelessWidget {
                     left: 12, right: 12, top: 12, bottom: 0),
                 child: SafeArea(
                     child: TextField(
-                  onChanged: (str) {
-                    if (str.isNotEmpty) {
-                      BlocProvider.of<SearchScreenBloc>(context)
-                          .add(OnQueryTextChangeEvent(query: str));
-                    }
-                  },
-                  controller: textEditingController,
+                  controller: queryController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -85,13 +89,13 @@ class SearchScreen extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(16.0),
                             child: Image.network(
-                              accounts[index].avatarUrl??"",
+                              accounts[index].avatarUrl ?? "",
                               height: 62.0,
                               width: 62.0,
                             ),
                           ),
                           const Padding(padding: EdgeInsets.all(12)),
-                          Text(accounts[index].login??""),
+                          Text(accounts[index].login ?? ""),
                           const Spacer(),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -118,8 +122,9 @@ class SearchScreen extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
 
   void showBottomSheetMine(BuildContext context, GitAccount gitAccount) {
-    nameController.text = gitAccount.login??"";
-    BlocProvider.of<SearchScreenBloc>(context).add(OnSelectSingleInformation(gitAccount.realLogin??""));
+    nameController.text = gitAccount.login ?? "";
+    BlocProvider.of<SearchScreenBloc>(context)
+        .add(OnSelectSingleInformation(gitAccount.realLogin ?? ""));
 
     showModalBottomSheet(
         context: context,
@@ -140,7 +145,7 @@ class SearchScreen extends StatelessWidget {
                 if (state is LoadedSingleAccountInformationState) {
                   return buildAccountInfoWidget(context, state.account);
                 }
-                if(state is AddedToFavoritesState) {
+                if (state is AddedToFavoritesState) {
                   Navigator.pop(context);
                 }
                 return Container();
@@ -178,7 +183,7 @@ class SearchScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
                 child: Image.network(
-                  account.avatarUrl??"",
+                  account.avatarUrl ?? "",
                   height: 62.0,
                   width: 62.0,
                 ),

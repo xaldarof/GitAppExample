@@ -45,11 +45,12 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   void dispatchSearchScreenEvent(CoreDatabase coreDatabase) {
     on<SearchScreenEvent>((event, emit) async {
       if (event is OnQueryTextChangeEvent) {
-        try {
+        List<GitAccount> list = [];
+
+      try {
           emit(SearchingAccountState());
 
           var response = await RemoteDataSource().getAccounts(event.query);
-          List<GitAccount> list = [];
 
           response.forEach((element) async {
             var cacheModel = await coreDatabase.cacheDao.getById(element.id ?? 1);
@@ -62,6 +63,8 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
                 realLogin: element.login,
                 isFavorite: isExist));
           });
+
+          print("List size = ${list.length}");
 
           emit(SuccessSearchResultState(list));
         } catch (e) {
