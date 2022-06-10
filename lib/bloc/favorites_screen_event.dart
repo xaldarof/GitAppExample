@@ -4,3 +4,5 @@ part of 'favorites_screen_bloc.dart';
 abstract class FavoritesScreenEvent {}
 
 class OnEnterScreen extends FavoritesScreenEvent {}
+
+

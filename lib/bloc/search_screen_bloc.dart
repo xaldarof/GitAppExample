@@ -25,57 +25,28 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         .then((value) async {
       database = value;
 
-      dispatchSearchScreenEvent(database);
-      dispatchSingleInformationScreenEvent(database);
-      // users = database.userDAO.retrieveUsers();
-    });
-  }
+      on<SearchScreenEvent>((event, emit) async {
+        if (event is OnQueryTextChangeEvent) {
+          try {
+            if (event.query.isNotEmpty) {
+              emit(SearchingAccountState());
 
-  void dispatchSingleInformationScreenEvent(CoreDatabase coreDatabase) {
-    on<OnSelectSingleInformation>((event, emit) async {
-      emit(LoadingSingleAccountInformationState());
-      var response = await RemoteDataSource().getByLogin(event.login);
+              var response = await RemoteDataSource().getAccounts(event.query);
 
-      print("Response = ${response.toString()}");
+              // var a = response.map((element) async {
+              //   var cache = await database.cacheDao.getById(element.id??1);
+              //
+              //   return dispatchFavoriteState(cache != null, element.toUiModel());
+              // }).toList();
 
-      emit(LoadedSingleAccountInformationState(response.toUiModel()));
-    });
-  }
-
-  void dispatchSearchScreenEvent(CoreDatabase coreDatabase) {
-    on<SearchScreenEvent>((event, emit) async {
-      if (event is OnQueryTextChangeEvent) {
-        List<GitAccount> list = [];
-
-      try {
-          emit(SearchingAccountState());
-
-          var response = await RemoteDataSource().getAccounts(event.query);
-
-          response.forEach((element) async {
-            var cacheModel = await coreDatabase.cacheDao.getById(element.id ?? 1);
-            var isExist = cacheModel != null;
-
-            list.add(GitAccount(
-                id: element.id,
-                login: cacheModel?.login ?? element.login,
-                avatarUrl: element.avatarUrl,
-                realLogin: element.login,
-                isFavorite: isExist));
-          });
-
-          print("List size = ${list.length}");
-
-          emit(SuccessSearchResultState(list));
-        } catch (e) {
-          emit(ErrorState(e as Exception));
+              emit(SuccessSearchResultState(
+                  response.map((e) => e.toUiModel()).toList()));
+            }
+          } catch (e) {
+            emit(ErrorState(e as Exception));
+          }
         }
-      }
-
-      if (event is AddToFavoritesEvent) {
-        coreDatabase.cacheDao.insertUser(event.gitAccount.toCacheModel());
-        emit(AddedToFavoritesState());
-      }
+      });
     });
   }
 }

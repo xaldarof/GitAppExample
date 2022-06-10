@@ -1,7 +1,6 @@
 import 'package:git_app/data/cache/AccountCacheModel.dart';
 import 'package:git_app/data/model/ui/GitAccount.dart';
 
-
 class GitAccountResponse {
   String? login;
   int? id;
@@ -19,11 +18,14 @@ class GitAccountResponse {
   }
 
   AccountCacheModel toCacheModel() {
-    return AccountCacheModel(id: id, login: login??"", avatarUrl: avatarUrl);
+    return AccountCacheModel(id: id, login: login ?? "", avatarUrl: avatarUrl);
   }
 
   GitAccount toUiModel() {
     return GitAccount(
-        id: id, login: login, avatarUrl: avatarUrl, isFavorite: false);
+        id: id,
+        login: login??"",
+        avatarUrl: avatarUrl,
+        isFavorite: false);
   }
 }

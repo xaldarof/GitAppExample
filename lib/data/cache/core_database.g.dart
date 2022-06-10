@@ -159,6 +159,6 @@ class _$CacheDao extends CacheDao {
   @override
   Future<int> insertUser(AccountCacheModel user) {
     return _accountCacheModelInsertionAdapter.insertAndReturnId(
-        user, OnConflictStrategy.abort);
+        user, OnConflictStrategy.replace);
   }
 }

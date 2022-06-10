@@ -13,7 +13,6 @@ class RemoteDataSource {
     var response = await http
         .get(Uri.parse("$BASE_URL/search/users?q=$query"));
 
-    print("Response = ${response.body}");
 
     return compute(parseAccountsJson, response.body);
   }

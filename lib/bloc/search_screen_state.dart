@@ -19,17 +19,3 @@ class ErrorState extends SearchScreenState {
 
   ErrorState(this.exception);
 }
-
-
-class AddedToFavoritesState extends SearchScreenState {
-}
-
-
-class LoadingSingleAccountInformationState extends SearchScreenState {
-  
-}
-class LoadedSingleAccountInformationState extends SearchScreenState {
-  GitAccount account;
-
-  LoadedSingleAccountInformationState(this.account);
-}

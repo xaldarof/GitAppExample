@@ -9,6 +9,9 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<FavoritesScreenBloc>(context)
+        .add(OnEnterScreen());
+
     return Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
@@ -33,10 +36,7 @@ class FavoritesScreen extends StatelessWidget {
           Expanded(child:
               BlocBuilder<FavoritesScreenBloc, FavoritesScreenState>(
                   builder: (context, state) {
-            if (state is FavoritesScreenInitial) {
-              BlocProvider.of<FavoritesScreenBloc>(context)
-                  .add(OnEnterScreen());
-            }
+
             if (state is OnEnterScreenState) {
               return buildListView(context, state.accounts);
             }

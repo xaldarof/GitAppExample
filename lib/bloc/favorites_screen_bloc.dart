@@ -22,11 +22,9 @@ class FavoritesScreenBloc
       database = value;
     });
 
+
     on<OnEnterScreen>((event, emit) async {
       var data = await database.cacheDao.getAll();
-
-      print("Cache = $data");
-
       emit(OnEnterScreenState(data));
     });
   }
