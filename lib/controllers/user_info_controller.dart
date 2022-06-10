@@ -8,9 +8,12 @@ class UserInfoController extends GetxController {
   void getAccountInfo(String login) async {
     var response = await RemoteDataSource().getByLogin(login);
     account = response.toUiModel();
+    update();
   }
 
   void updateName() {
-    account = GitAccount(id: 1, login: "login", avatarUrl: "avatarUrl", isFavorite: false);
+    account = GitAccount(
+        id: 1, login: "login", avatarUrl: "avatarUrl", isFavorite: false);
+    update();
   }
 }

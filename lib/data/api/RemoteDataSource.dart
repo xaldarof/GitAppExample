@@ -9,9 +9,9 @@ import '../parsers.dart';
 
 class RemoteDataSource {
 
-  Future<List<GitAccountResponse>> getAccounts(String query) async {
+  Future<List<GitAccountResponse>> getAccounts(String query,int page) async {
     var response = await http
-        .get(Uri.parse("$BASE_URL/search/users?q=$query"));
+        .get(Uri.parse("$BASE_URL/search/users?q=$query&page=$page"));
 
 
     return compute(parseAccountsJson, response.body);

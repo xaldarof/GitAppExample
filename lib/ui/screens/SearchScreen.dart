@@ -1,23 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:git_app/controllers/search_controller.dart';
 import 'package:git_app/data/model/ui/GitAccount.dart';
 import 'package:git_app/ui/screens/AccountDetailScreen.dart';
 
 import '../../bloc/search_screen_bloc.dart';
 
 class SearchScreen extends StatelessWidget {
-
   TextEditingController queryController = TextEditingController();
+  SearchController controller = Get.put(SearchController());
+
+  ScrollController scrollController = ScrollController();
+
+  void initListener() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        controller.updateCurrentPage();
+        controller.searchAccount(queryController.text);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    initListener();
+
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.search),
           onPressed: () {
             if (queryController.text.isNotEmpty) {
-              BlocProvider.of<SearchScreenBloc>(context)
-                  .add(OnQueryTextChangeEvent(query: queryController.text));
+              controller.searchAccount(queryController.text);
             }
           },
         ),
@@ -39,17 +54,25 @@ class SearchScreen extends StatelessWidget {
                       hintText: "Title...",
                       fillColor: Colors.white70),
                 ))),
-            Expanded(child: BlocBuilder<SearchScreenBloc, SearchScreenState>(
-              builder: (context, state) {
-                if (state is SuccessSearchResultState) {
-                  return buildListView(context, state.accounts);
-                }
-                if (state is SearchingAccountState) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return buildListView(context, []);
-              },
-            ))
+            Expanded(child: GetBuilder<SearchController>(builder: (controller) {
+              
+              if (controller.state == SearchState.LOADING) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if(controller.state == SearchState.LOADING_MORE_PAGE) {
+                return buildListView(context, controller.accounts);
+              }
+
+              if (controller.state == SearchState.SUCCESS) {
+                return buildListView(context, controller.accounts);
+              }
+              if (controller.state == SearchState.ERROR) {
+                return const Center(child: Text("Something went wrong"));
+              }
+
+              return const Center(child: Text("Search something..."));
+            }))
           ],
         ));
   }
@@ -59,6 +82,7 @@ class SearchScreen extends StatelessWidget {
       return Column(children: [
         Expanded(
             child: ListView.builder(
+                controller: scrollController,
                 itemCount: accounts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -87,9 +111,10 @@ class SearchScreen extends StatelessWidget {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.all(12)),
-                          Text(accounts[index].login,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16)),
+                          Text(accounts[index].login,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
                           const Spacer(),
-
                         ],
                       ),
                     ),
@@ -97,7 +122,8 @@ class SearchScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AccountDetailScreen(account: accounts[index]),
+                          builder: (context) =>
+                              AccountDetailScreen(account: accounts[index]),
                         ),
                       );
                     },
@@ -108,5 +134,4 @@ class SearchScreen extends StatelessWidget {
       return const Center(child: Text("Nothing to show"));
     }
   }
-
 }

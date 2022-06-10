@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:git_app/ui/screens/FavoritesScreen.dart';
 import 'package:git_app/ui/screens/SearchScreen.dart';
-
-import '../bloc/core/core_screen_bloc.dart';
 
 class CoreScreen extends StatefulWidget {
   @override

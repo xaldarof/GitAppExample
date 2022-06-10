@@ -31,7 +31,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
             if (event.query.isNotEmpty) {
               emit(SearchingAccountState());
 
-              var response = await RemoteDataSource().getAccounts(event.query);
+              var response = await RemoteDataSource().getAccounts(event.query,1);
 
               // var a = response.map((element) async {
               //   var cache = await database.cacheDao.getById(element.id??1);
