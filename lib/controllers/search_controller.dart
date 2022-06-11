@@ -16,6 +16,13 @@ class SearchController extends GetxController {
     currentPage++;
   }
 
+  void refreshPaging() {
+    isFirstLoad = true;
+    currentPage = 1;
+    accounts.clear();
+    update();
+  }
+
   void searchAccount(String login) async {
     try {
       if(isFirstLoad) {

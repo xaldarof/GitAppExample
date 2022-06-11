@@ -1,29 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:git_app/bloc/account_detail_screen_bloc.dart';
-import 'package:git_app/bloc/core/core_screen_bloc.dart';
-import 'package:git_app/bloc/search_screen_bloc.dart';
 import 'package:git_app/ui/CoreScreen.dart';
 import 'package:git_app/ui/routes.dart';
-import 'package:git_app/ui/screens/AccountDetailScreen.dart';
 import 'package:git_app/ui/screens/FavoritesScreen.dart';
 import 'package:git_app/ui/screens/SearchScreen.dart';
 
-import 'bloc/favorites_screen_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MultiBlocProvider(providers: [
-
-    BlocProvider<CoreScreenBloc>(create: (context) => CoreScreenBloc()),
-    BlocProvider<SearchScreenBloc>(create: (context) => SearchScreenBloc()),
-    BlocProvider<FavoritesScreenBloc>(
-        create: (context) => FavoritesScreenBloc()),
-    BlocProvider<AccountDetailScreenBloc>(
-        create: (context) => AccountDetailScreenBloc()),
-
-  ], child: GitApp()));
+  runApp(GitApp());
 }
 
 class GitApp extends StatefulWidget {

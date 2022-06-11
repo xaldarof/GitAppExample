@@ -2,18 +2,25 @@ import 'package:get/get.dart';
 import 'package:git_app/data/api/RemoteDataSource.dart';
 import 'package:git_app/data/model/ui/GitAccount.dart';
 
-class UserInfoController extends GetxController {
-  GitAccount? account;
+class FollowersScreenController extends GetxController {
+  List<GitAccount>? accounts;
 
-  void getAccountInfo(String login) async {
-    var response = await RemoteDataSource().getByLogin(login);
-    account = response.toUiModel();
-    update();
-  }
+  InfoState state = InfoState.LOADING;
 
-  void updateName() {
-    account = GitAccount(
-        id: 1, login: "login", avatarUrl: "avatarUrl", isFavorite: false);
-    update();
+  void getAccountFollowers(String login) async {
+    try {
+      update();
+      var response = await RemoteDataSource().getAccountFollowers(login);
+      accounts = response.map((e) => e.toUiModel()).toList();
+      state = InfoState.SUCCESS;
+
+      update();
+    } catch (e) {
+      state = InfoState.ERROR;
+      e.printError();
+      update();
+    }
   }
 }
+
+enum InfoState { SUCCESS, LOADING, ERROR }

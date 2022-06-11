@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:git_app/controllers/search_controller.dart';
+import 'package:git_app/controllers/user_info_controller.dart';
 import 'package:git_app/data/model/ui/GitAccount.dart';
 import 'package:git_app/ui/screens/AccountDetailScreen.dart';
 
-import '../../bloc/search_screen_bloc.dart';
+import '../../controllers/repositories_controller.dart';
 
 class SearchScreen extends StatelessWidget {
   TextEditingController queryController = TextEditingController();
@@ -16,7 +17,8 @@ class SearchScreen extends StatelessWidget {
 
   void initListener() {
     scrollController.addListener(() {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         controller.updateCurrentPage();
         controller.searchAccount(queryController.text);
       }
@@ -32,6 +34,7 @@ class SearchScreen extends StatelessWidget {
           child: const Icon(Icons.search),
           onPressed: () {
             if (queryController.text.isNotEmpty) {
+              controller.refreshPaging();
               controller.searchAccount(queryController.text);
             }
           },
@@ -55,12 +58,11 @@ class SearchScreen extends StatelessWidget {
                       fillColor: Colors.white70),
                 ))),
             Expanded(child: GetBuilder<SearchController>(builder: (controller) {
-              
               if (controller.state == SearchState.LOADING) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              if(controller.state == SearchState.LOADING_MORE_PAGE) {
+              if (controller.state == SearchState.LOADING_MORE_PAGE) {
                 return buildListView(context, controller.accounts);
               }
 
@@ -119,6 +121,9 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
+                      Get.delete<FollowersScreenController>();
+                      Get.delete<RepositoriesController>();
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
