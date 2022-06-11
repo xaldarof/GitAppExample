@@ -3,7 +3,6 @@ import 'package:git_app/data/api/RemoteDataSource.dart';
 import 'package:git_app/data/model/remote/GitRepositoryResponse.dart';
 import 'package:git_app/data/model/ui/GitAccount.dart';
 
-
 class RepositoriesController extends GetxController {
   List<GitRepositoryResponse>? accounts;
 
@@ -15,13 +14,16 @@ class RepositoriesController extends GetxController {
       var response = await RemoteDataSource().getAccountRepos(login);
       accounts = response;
       state = ReposState.SUCCESS;
-      update();
 
+      update();
     } catch (e) {
-      e.printError();
+      print("Repo error");
+
       state = ReposState.ERROR;
+      e.printError();
       update();
     }
+    update();
   }
 }
 

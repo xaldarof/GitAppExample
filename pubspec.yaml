@@ -41,8 +41,10 @@ dependencies:
 
 
   sqflite: ^2.0.2
-  path_provider: ^1.6.8
+  path_provider:
   floor: ^1.2.0
+  shared_preferences: ^2.0.8
+
 
 dev_dependencies:
   flutter_test:

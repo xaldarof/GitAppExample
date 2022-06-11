@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -28,6 +30,14 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initListener();
+
+    var map = <String, dynamic>{
+      "username": "Temur",
+      "password": "12345",
+      "user": GitAccount(id: 1, login: "", avatarUrl: "", isFavorite: true)
+    };
+
+    print("Converted = ${jsonEncode(map)}");
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -117,6 +127,24 @@ class SearchScreen extends StatelessWidget {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16)),
                           const Spacer(),
+                          GetBuilder<SearchController>(builder: (t) {
+                            if (accounts[index].isFavorite) {
+                              return GestureDetector(
+                                  child: const Icon(Icons.favorite,
+                                      color: Colors.red),
+                                  onTap: () {
+                                    controller.dispatchAccountState(index);
+                                  });
+                            } else {
+                              return GestureDetector(
+                                  child: const Icon(Icons.favorite,
+                                      color: Colors.black),
+                                  onTap: () {
+                                    controller.dispatchAccountState(index);
+                                  });
+                            }
+                          }),
+                          const Padding(padding: EdgeInsets.all(12))
                         ],
                       ),
                     ),

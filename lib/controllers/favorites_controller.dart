@@ -20,4 +20,17 @@ class FavoritesController extends GetxController {
     });
     super.onInit();
   }
+
+  @override
+  void onReady() {
+    $FloorCoreDatabase
+        .databaseBuilder('user_database.db')
+        .build()
+        .then((value) async {
+      database = value;
+      accounts = await database.cacheDao.getAll();
+      update();
+    });
+    super.onReady();
+  }
 }

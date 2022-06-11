@@ -29,8 +29,7 @@ class FollowersScreen extends StatelessWidget {
         }
 
         if (controller.state == InfoState.SUCCESS) {
-          return Expanded(
-              child: buildListView(context, controller.accounts ?? []));
+          return buildListView(context, controller.accounts ?? []);
         }
         return const Center(child: Text("Nothing to show"));
       }))
@@ -71,7 +70,6 @@ class FollowersScreen extends StatelessWidget {
                     Text(accounts[index].login,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16)),
-                    const Spacer(),
                   ],
                 ),
               ),

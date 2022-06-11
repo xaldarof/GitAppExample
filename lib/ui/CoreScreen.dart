@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:git_app/controllers/favorites_controller.dart';
 import 'package:git_app/ui/screens/FavoritesScreen.dart';
 import 'package:git_app/ui/screens/SearchScreen.dart';
 

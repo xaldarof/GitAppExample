@@ -55,7 +55,7 @@ class AccountDetailScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 FollowersScreen(login: account.login),
-                RepositoriesScreen(login: account.login)
+                RepositoriesScreen(login: account.login),
               ],
             )));
   }

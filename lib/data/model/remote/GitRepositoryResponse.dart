@@ -1,7 +1,12 @@
+import 'package:json_annotation/json_annotation.dart';
 
+part 'GitRepositoryResponse.g.dart';
+
+@JsonSerializable()
 class GitRepositoryResponse {
   int? id;
   String? name;
+  @JsonKey(name: 'full_name')
   String? fullName;
   String? description;
 
@@ -11,12 +16,6 @@ class GitRepositoryResponse {
       required this.fullName,
       required this.description});
 
-  factory GitRepositoryResponse.fromJson(Map<String, dynamic> json) {
-    return GitRepositoryResponse(
-      id: json['id'],
-      fullName: json['full_name'],
-      name: json['name'],
-      description: json['description'],
-    );
-  }
+  factory GitRepositoryResponse.fromJson(Map<String, dynamic> json) =>
+      _$GitRepositoryResponseFromJson(json);
 }

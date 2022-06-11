@@ -1,6 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../cache/AccountCacheModel.dart';
 
-class GitAccount {
+class GitAccount extends JsonSerializable {
   final int? id;
   final String login;
   final String? avatarUrl;
